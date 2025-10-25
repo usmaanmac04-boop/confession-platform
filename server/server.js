@@ -11,33 +11,28 @@ connectDB();
 
 const app = express();
 
-// ✅ Define allowed origins
-const allowedOrigins = [
-  process.env.CLIENT_URL,     // production frontend (Vercel)
-  'http://localhost:5173',    // local dev
-];
+// ✅ CORS - Allow all origins for now (simplest fix)
+app.use(cors({
+  origin: '*',
+  credentials: true,
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization']
+}));
 
-// ✅ CORS middleware
-app.use(
-  cors({
-    origin: function (origin, callback) {
-      // Allow requests with no origin (like mobile apps or curl)
-      if (!origin) return callback(null, true);
-
-      if (allowedOrigins.includes(origin)) {
-        return callback(null, true);
-      } else {
-        console.warn(`🚫 CORS blocked for origin: ${origin}`);
-        return callback(new Error('Not allowed by CORS'));
-      }
-    },
-    credentials: true,
-  })
-);
+// ✅ Handle preflight requests
+app.options('*', cors());
 
 // ✅ Express middleware
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+
+// ✅ Additional CORS headers as backup
+app.use((req, res, next) => {
+  res.header('Access-Control-Allow-Origin', '*');
+  res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
+  res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept, Authorization');
+  next();
+});
 
 // ✅ Routes
 app.use('/api/auth', require('./routes/authRoutes'));
@@ -54,8 +49,9 @@ app.use((err, req, res, next) => {
   res.status(500).json({ message: 'Something went wrong!' });
 });
 
-const PORT = process.env.PORT || 5000;
+const PORT = process.env.PORT || 5001;
 
 app.listen(PORT, () => {
   console.log(`✅ Server running on port ${PORT}`);
+  console.log(`✅ CORS enabled for all origins`);
 });
