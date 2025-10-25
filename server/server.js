@@ -11,31 +11,25 @@ connectDB();
 
 const app = express();
 
-// ✅ CORS - Allow all origins
-app.use(cors({
-  origin: '*',
-  credentials: true,
-  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-  allowedHeaders: ['Content-Type', 'Authorization']
-}));
+// ✅ CORS - Simple and permissive
+app.use(cors());
 
-// ✅ Express middleware
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
-
-// ✅ Additional CORS headers as backup
 app.use((req, res, next) => {
   res.header('Access-Control-Allow-Origin', '*');
-  res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
+  res.header('Access-Control-Allow-Credentials', 'true');
+  res.header('Access-Control-Allow-Methods', 'GET,HEAD,OPTIONS,POST,PUT,DELETE');
   res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept, Authorization');
   
-  // Handle preflight
   if (req.method === 'OPTIONS') {
     return res.sendStatus(200);
   }
   
   next();
 });
+
+// ✅ Express middleware
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 
 // ✅ Routes
 app.use('/api/auth', require('./routes/authRoutes'));
@@ -56,5 +50,4 @@ const PORT = process.env.PORT || 5001;
 
 app.listen(PORT, () => {
   console.log(`✅ Server running on port ${PORT}`);
-  console.log(`✅ CORS enabled for all origins`);
 });
