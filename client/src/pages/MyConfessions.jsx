@@ -54,8 +54,8 @@ const MyConfessions = () => {
           <h1 className="text-3xl sm:text-4xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-purple-600 to-pink-600 mb-2">
             My Confessions
           </h1>
-          <p className="text-sm sm:text-base text-gray-900 dark:text-gray-300 font-semibold drop-shadow-sm">
-            Your personal confessions
+          <p className="text-sm sm:text-base text-gray-900 dark:text-gray-300 font-bold bg-white/80 dark:bg-gray-800/60 px-6 py-2 rounded-full inline-block backdrop-blur-md border border-gray-200 dark:border-gray-700 shadow-sm">
+              Your personal confessions
           </p>
         </div>
 
