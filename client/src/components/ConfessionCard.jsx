@@ -43,13 +43,13 @@ const ConfessionCard = ({ confession, onDelete, onUpdate }) => {
   const isOwner = user && confession.author?._id === user._id;
 
   return (
-    <div className="bg-white/80 backdrop-blur-sm rounded-2xl shadow-md p-6 hover:shadow-xl transition-all border border-white/50">
+    <div className="bg-white/80 dark:bg-gray-800/90 backdrop-blur-sm rounded-2xl shadow-md p-6 hover:shadow-xl transition-all border border-white/50 dark:border-gray-700">
       <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between mb-3 gap-2">
         <span className={`px-3 py-1 rounded-full text-xs font-medium ${category.color}`}>
           {category.label}
         </span>
         <div className="flex items-center space-x-2">
-          <span className="text-xs text-gray-400">
+          <span className="text-xs text-gray-400 dark:text-gray-500">
             {formatTime(confession.createdAt)}
           </span>
           {isOwner && (
@@ -63,17 +63,17 @@ const ConfessionCard = ({ confession, onDelete, onUpdate }) => {
         </div>
       </div>
 
-      <p className="text-gray-800 whitespace-pre-wrap mb-4 leading-relaxed">
+      <p className="text-gray-800 dark:text-gray-200 whitespace-pre-wrap mb-4 leading-relaxed">
         {confession.text}
       </p>
 
-      <div className="flex flex-wrap items-center gap-3 sm:gap-4 pt-3 border-t border-gray-100">
+      <div className="flex flex-wrap items-center gap-3 sm:gap-4 pt-3 border-t border-gray-100 dark:border-gray-700">
         <button
           onClick={handleHeart}
           className={`flex items-center gap-2 px-3 py-1 rounded-full transition-all ${
             hasHearted
-              ? 'bg-red-100 text-red-600'
-              : 'bg-gray-100 text-gray-600 hover:bg-red-50'
+              ? 'bg-red-100 dark:bg-red-900/30 text-red-600 dark:text-red-400'
+              : 'bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 hover:bg-red-50 dark:hover:bg-red-900/20'
           }`}
         >
           <Heart size={16} fill={hasHearted ? 'currentColor' : 'none'} />
@@ -81,7 +81,7 @@ const ConfessionCard = ({ confession, onDelete, onUpdate }) => {
         </button>
         
         {confession.isGuest && (
-          <span className="text-xs text-gray-400">Guest Post</span>
+          <span className="text-xs text-gray-400 dark:text-gray-500">Guest Post</span>
         )}
       </div>
 

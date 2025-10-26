@@ -111,3 +111,21 @@
 .animate-wave {
   animation: wave 10s ease-in-out infinite;
 }
+
+/* Dark mode background */
+.dark .animated-bg {
+  background: linear-gradient(
+    -45deg,
+    #1a1a2e,
+    #16213e,
+    #0f3460,
+    #1a1a2e
+  );
+}
+
+/* Smooth transitions */
+* {
+  transition-property: background-color, border-color, color;
+  transition-duration: 200ms;
+  transition-timing-function: ease-in-out;
+}
