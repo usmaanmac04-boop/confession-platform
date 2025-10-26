@@ -52,7 +52,7 @@ const Home = () => {
             Anonymous Hearts
           </h1>
            <p className="text-sm sm:text-base text-gray-900 dark:text-gray-300 font-bold bg-white/80 dark:bg-gray-800/60 px-6 py-2 rounded-full inline-block backdrop-blur-md border border-gray-200 dark:border-gray-700 shadow-sm">
-            Express yourself freely, without judgment and fear, your secrets are safe.
+            Express yourself freely, without judgement and fear, your secrets are safe.
           </p>
           </div>
 
