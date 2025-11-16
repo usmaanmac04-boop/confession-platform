@@ -1,0 +1,650 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Anonymous Hearts - Project Presentation</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      overflow: hidden;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    }
+
+    .presentation {
+      width: 100vw;
+      height: 100vh;
+      position: relative;
+    }
+
+    .slide {
+      width: 100%;
+      height: 100%;
+      position: absolute;
+      top: 0;
+      left: 0;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      padding: 60px;
+      opacity: 0;
+      transform: translateX(100%);
+      transition: all 0.6s ease;
+    }
+
+    .slide.active {
+      opacity: 1;
+      transform: translateX(0);
+    }
+
+    .slide.prev {
+      transform: translateX(-100%);
+    }
+
+    /* Slide Backgrounds */
+    .bg-gradient {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    }
+
+    .bg-dark {
+      background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+    }
+
+    .bg-light {
+      background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+      color: #333;
+    }
+
+    /* Typography */
+    h1 {
+      font-size: 4rem;
+      font-weight: 700;
+      margin-bottom: 1rem;
+      background: linear-gradient(135deg, #ffd89b 0%, #19547b 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    h2 {
+      font-size: 3rem;
+      margin-bottom: 2rem;
+      color: white;
+    }
+
+    .bg-light h2 {
+      color: #333;
+    }
+
+    h3 {
+      font-size: 2rem;
+      margin-bottom: 1.5rem;
+      color: #f0abfc;
+    }
+
+    p {
+      font-size: 1.3rem;
+      line-height: 1.8;
+      color: rgba(255, 255, 255, 0.9);
+      max-width: 900px;
+      text-align: center;
+    }
+
+    .bg-light p {
+      color: #555;
+    }
+
+    .subtitle {
+      font-size: 1.5rem;
+      color: rgba(255, 255, 255, 0.8);
+      margin-top: 1rem;
+    }
+
+    /* Lists */
+    ul {
+      list-style: none;
+      font-size: 1.4rem;
+      line-height: 2.5;
+      color: white;
+    }
+
+    .bg-light ul {
+      color: #444;
+    }
+
+    ul li::before {
+      content: "✅ ";
+      margin-right: 10px;
+    }
+
+    /* Grid Layouts */
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 2rem;
+      width: 100%;
+      max-width: 1200px;
+      margin-top: 2rem;
+    }
+
+    .grid-3 {
+      grid-template-columns: repeat(3, 1fr);
+    }
+
+    .card {
+      background: rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(10px);
+      border-radius: 20px;
+      padding: 2rem;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+    }
+
+    .bg-light .card {
+      background: white;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    }
+
+    .card h3 {
+      font-size: 1.5rem;
+      margin-bottom: 1rem;
+    }
+
+    .card p {
+      font-size: 1.1rem;
+      text-align: left;
+    }
+
+    /* Tech Stack */
+    .tech-stack {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1rem;
+      justify-content: center;
+      margin-top: 2rem;
+    }
+
+    .tech-badge {
+      background: rgba(255, 255, 255, 0.2);
+      padding: 0.8rem 1.5rem;
+      border-radius: 50px;
+      font-weight: 600;
+      font-size: 1.1rem;
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255, 255, 255, 0.3);
+    }
+
+    /* Emoji */
+    .emoji {
+      font-size: 5rem;
+      margin-bottom: 1rem;
+    }
+
+    /* Navigation */
+    .nav-buttons {
+      position: fixed;
+      bottom: 30px;
+      right: 30px;
+      display: flex;
+      gap: 1rem;
+      z-index: 1000;
+    }
+
+    button {
+      padding: 1rem 1.5rem;
+      font-size: 1.1rem;
+      background: rgba(255, 255, 255, 0.2);
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      border-radius: 50px;
+      color: white;
+      cursor: pointer;
+      transition: all 0.3s;
+      font-weight: 600;
+    }
+
+    button:hover {
+      background: rgba(255, 255, 255, 0.3);
+      transform: scale(1.05);
+    }
+
+    button:disabled {
+      opacity: 0.3;
+      cursor: not-allowed;
+    }
+
+    /* Slide Counter */
+    .slide-counter {
+      position: fixed;
+      bottom: 30px;
+      left: 30px;
+      color: white;
+      font-size: 1.2rem;
+      background: rgba(255, 255, 255, 0.2);
+      padding: 0.8rem 1.5rem;
+      border-radius: 50px;
+      backdrop-filter: blur(10px);
+      z-index: 1000;
+    }
+
+    /* Feature List */
+    .feature-list {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+      width: 100%;
+      max-width: 800px;
+    }
+
+    .feature-item {
+      background: rgba(255, 255, 255, 0.1);
+      padding: 1.5rem;
+      border-radius: 15px;
+      border-left: 5px solid #f0abfc;
+      text-align: left;
+    }
+
+    .feature-item strong {
+      color: #fcd34d;
+      font-size: 1.3rem;
+    }
+
+    /* Stats */
+    .stats {
+      display: flex;
+      gap: 3rem;
+      margin-top: 2rem;
+    }
+
+    .stat-box {
+      text-align: center;
+    }
+
+    .stat-number {
+      font-size: 4rem;
+      font-weight: 700;
+      color: #fcd34d;
+    }
+
+    .stat-label {
+      font-size: 1.2rem;
+      color: rgba(255, 255, 255, 0.8);
+      margin-top: 0.5rem;
+    }
+
+    /* Code block */
+    .code {
+      background: #1e1e1e;
+      color: #d4d4d4;
+      padding: 1.5rem;
+      border-radius: 10px;
+      font-family: 'Courier New', monospace;
+      text-align: left;
+      font-size: 1rem;
+      max-width: 900px;
+      margin-top: 1rem;
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+      h1 { font-size: 2.5rem; }
+      h2 { font-size: 2rem; }
+      h3 { font-size: 1.5rem; }
+      p, ul { font-size: 1rem; }
+      .slide { padding: 30px; }
+      .grid { grid-template-columns: 1fr; }
+      .stats { flex-direction: column; gap: 1.5rem; }
+    }
+  </style>
+</head>
+<body>
+  <div class="presentation">
+    <!-- Slide 1: Title -->
+    <div class="slide active bg-gradient">
+      <div class="emoji">💭</div>
+      <h1>Anonymous Hearts</h1>
+      <p class="subtitle">A Full-Stack Confession Platform</p>
+      <p style="margin-top: 2rem;">Built with MERN Stack</p>
+      <p style="margin-top: 1rem; font-size: 1.1rem;">Press → to continue</p>
+    </div>
+
+    <!-- Slide 2: Problem Statement -->
+    <div class="slide bg-dark">
+      <h2>The Problem 🤔</h2>
+      <div class="feature-list">
+        <div class="feature-item">
+          <p>People hesitate to share their true feelings publicly</p>
+        </div>
+        <div class="feature-item">
+          <p>Fear of judgment prevents honest expression</p>
+        </div>
+        <div class="feature-item">
+          <p>Existing platforms lack privacy or feel too formal</p>
+        </div>
+        <div class="feature-item">
+          <p>Need a safe space for authentic self-expression</p>
+        </div>
+      </div>
+      <p style="margin-top: 2rem; font-style: italic; color: #fcd34d;">
+        "How can we create a platform that balances anonymity with meaningful engagement?"
+      </p>
+    </div>
+
+    <!-- Slide 3: Solution -->
+    <div class="slide bg-gradient">
+      <h2>The Solution 💡</h2>
+      <div class="grid">
+        <div class="card">
+          <h3>🎭 Complete Anonymity</h3>
+          <p>Post as guest without any registration</p>
+        </div>
+        <div class="card">
+          <h3>🔐 Optional Sign-in</h3>
+          <p>Track and manage your posts</p>
+        </div>
+        <div class="card">
+          <h3>💬 Community Engagement</h3>
+          <p>Comments, reactions, and likes</p>
+        </div>
+        <div class="card">
+          <h3>🎨 Emotional Categories</h3>
+          <p>Confession, Venting, Hope, Fear, etc.</p>
+        </div>
+      </div>
+      <p style="margin-top: 2rem; font-size: 1.8rem; font-weight: 600;">
+        "Express Yourself Freely, Without Judgment"
+      </p>
+    </div>
+
+    <!-- Slide 4: Key Features -->
+    <div class="slide bg-light">
+      <h2>Key Features 🌟</h2>
+      <div class="grid grid-3">
+        <div class="card">
+          <div style="font-size: 3rem; margin-bottom: 1rem;">🎭</div>
+          <h3>Dual Authentication</h3>
+          <p>Guest mode + optional sign-up</p>
+        </div>
+        <div class="card">
+          <div style="font-size: 3rem; margin-bottom: 1rem;">💭</div>
+          <h3>6 Categories</h3>
+          <p>Confession, Venting, Gratitude, Secret, Hope, Fear</p>
+        </div>
+        <div class="card">
+          <div style="font-size: 3rem; margin-bottom: 1rem;">❤️</div>
+          <h3>Heart Reactions</h3>
+          <p>Show support anonymously</p>
+        </div>
+        <div class="card">
+          <div style="font-size: 3rem; margin-bottom: 1rem;">💬</div>
+          <h3>Comments System</h3>
+          <p>With likes on comments</p>
+        </div>
+        <div class="card">
+          <div style="font-size: 3rem; margin-bottom: 1rem;">🌙</div>
+          <h3>Dark Mode</h3>
+          <p>Persistent theme toggle</p>
+        </div>
+        <div class="card">
+          <div style="font-size: 3rem; margin-bottom: 1rem;">📱</div>
+          <h3>Responsive Design</h3>
+          <p>Works on all devices</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 5: Tech Stack -->
+    <div class="slide bg-dark">
+      <h2>Technology Stack 🛠️</h2>
+      <h3 style="color: #f0abfc;">Frontend</h3>
+      <div class="tech-stack">
+        <div class="tech-badge">React.js</div>
+        <div class="tech-badge">Vite</div>
+        <div class="tech-badge">Tailwind CSS</div>
+        <div class="tech-badge">React Router</div>
+        <div class="tech-badge">Axios</div>
+      </div>
+      <h3 style="color: #f0abfc; margin-top: 2rem;">Backend</h3>
+      <div class="tech-stack">
+        <div class="tech-badge">Node.js</div>
+        <div class="tech-badge">Express.js</div>
+        <div class="tech-badge">MongoDB</div>
+        <div class="tech-badge">JWT</div>
+        <div class="tech-badge">bcrypt</div>
+      </div>
+      <h3 style="color: #f0abfc; margin-top: 2rem;">Deployment</h3>
+      <div class="tech-stack">
+        <div class="tech-badge">Vercel</div>
+        <div class="tech-badge">Render</div>
+        <div class="tech-badge">MongoDB Atlas</div>
+      </div>
+    </div>
+
+    <!-- Slide 6: Architecture -->
+    <div class="slide bg-gradient">
+      <h2>System Architecture 🏗️</h2>
+      <div style="font-size: 1.5rem; line-height: 3; max-width: 600px; text-align: center;">
+        <div>👤 <strong>User Browser</strong></div>
+        <div style="font-size: 2rem;">↓</div>
+        <div>⚛️ <strong>React Frontend</strong> (Vercel)</div>
+        <div style="font-size: 2rem;">↓ REST API</div>
+        <div>🟢 <strong>Node.js Backend</strong> (Render)</div>
+        <div style="font-size: 2rem;">↓</div>
+        <div>🍃 <strong>MongoDB Atlas</strong></div>
+      </div>
+    </div>
+
+    <!-- Slide 7: Database Schema -->
+    <div class="slide bg-light">
+      <h2>Database Design 📊</h2>
+      <div class="grid">
+        <div class="card">
+          <h3>Users Collection</h3>
+          <ul style="font-size: 1rem; text-align: left;">
+            <li>username, email</li>
+            <li>password (hashed)</li>
+            <li>displayName (anonymous)</li>
+            <li>role (user/admin)</li>
+            <li>createdAt</li>
+          </ul>
+        </div>
+        <div class="card">
+          <h3>Confessions Collection</h3>
+          <ul style="font-size: 1rem; text-align: left;">
+            <li>text, category</li>
+            <li>author (ref to User)</li>
+            <li>isGuest (boolean)</li>
+            <li>hearts, heartedBy[]</li>
+            <li>comments[] (nested)</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 8: API Endpoints -->
+    <div class="slide bg-dark">
+      <h2>RESTful API 🔌</h2>
+      <div class="code">
+        <div><span style="color: #4ec9b0;">POST</span>   /api/auth/register</div>
+        <div><span style="color: #4ec9b0;">POST</span>   /api/auth/login</div>
+        <div><span style="color: #4ec9b0;">GET</span>    /api/auth/me</div>
+        <div style="margin-top: 1rem;"><span style="color: #4ec9b0;">GET</span>    /api/confessions</div>
+        <div><span style="color: #4ec9b0;">POST</span>   /api/confessions</div>
+        <div><span style="color: #4ec9b0;">DELETE</span> /api/confessions/:id</div>
+        <div><span style="color: #4ec9b0;">POST</span>   /api/confessions/:id/heart</div>
+        <div style="margin-top: 1rem;"><span style="color: #4ec9b0;">POST</span>   /api/confessions/:id/comment</div>
+        <div><span style="color: #4ec9b0;">DELETE</span> /api/confessions/:id/comment/:commentId</div>
+        <div><span style="color: #4ec9b0;">POST</span>   /api/confessions/:id/comment/:commentId/like</div>
+      </div>
+    </div>
+
+    <!-- Slide 9: Security -->
+    <div class="slide bg-gradient">
+      <h2>Security Features 🔒</h2>
+      <ul style="max-width: 700px;">
+        <li>Password Hashing with bcrypt</li>
+        <li>JWT Token Authentication</li>
+        <li>Protected Routes Middleware</li>
+        <li>CORS Configuration</li>
+        <li>Input Validation & Sanitization</li>
+        <li>MongoDB Injection Prevention</li>
+        <li>Environment Variables</li>
+        <li>HTTPS Encryption in Production</li>
+      </ul>
+    </div>
+
+    <!-- Slide 10: Challenges -->
+    <div class="slide bg-dark">
+      <h2>Challenges & Solutions 💪</h2>
+      <div class="feature-list">
+        <div class="feature-item">
+          <strong>Challenge:</strong> Balancing Anonymity & Engagement<br>
+          <strong>Solution:</strong> Hybrid authentication system
+        </div>
+        <div class="feature-item">
+          <strong>Challenge:</strong> CORS Errors in Production<br>
+          <strong>Solution:</strong> Proper origin configuration
+        </div>
+        <div class="feature-item">
+          <strong>Challenge:</strong> Managing Nested Comments<br>
+          <strong>Solution:</strong> MongoDB subdocuments
+        </div>
+        <div class="feature-item">
+          <strong>Challenge:</strong> Dark Mode Persistence<br>
+          <strong>Solution:</strong> localStorage + Context API
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 11: Future Enhancements -->
+    <div class="slide bg-light">
+      <h2>What's Next? 🚀</h2>
+      <div class="grid">
+        <div class="card">
+          <h3>📊 Admin Dashboard</h3>
+          <p>User management, content moderation, analytics</p>
+        </div>
+        <div class="card">
+          <h3>🔔 Notifications</h3>
+          <p>Real-time updates on comments and reactions</p>
+        </div>
+        <div class="card">
+          <h3>📧 Email Verification</h3>
+          <p>Secure account verification</p>
+        </div>
+        <div class="card">
+          <h3>⭐ Favorites</h3>
+          <p>Save and bookmark confessions</p>
+        </div>
+        <div class="card">
+          <h3>🔍 Advanced Search</h3>
+          <p>Filter by category, date, popularity</p>
+        </div>
+        <div class="card">
+          <h3>📱 Mobile App</h3>
+          <p>React Native implementation</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 12: Lessons Learned -->
+    <div class="slide bg-gradient">
+      <h2>Key Takeaways 💡</h2>
+      <div class="grid">
+        <div>
+          <h3>Technical Skills</h3>
+          <ul>
+            <li>Full-stack MERN development</li>
+            <li>RESTful API design</li>
+            <li>JWT authentication</li>
+            <li>Database optimization</li>
+            <li>Deployment & DevOps</li>
+          </ul>
+        </div>
+        <div>
+          <h3>Soft Skills</h3>
+          <ul>
+            <li>Problem-solving</li>
+            <li>User-centric design</li>
+            <li>Time management</li>
+            <li>Documentation</li>
+            <li>Continuous learning</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 13: Thank You -->
+    <div class="slide bg-dark">
+      <div class="emoji">🙏</div>
+      <h2>Thank You!</h2>
+      <p style="margin-top: 2rem;">Questions?</p>
+      <div style="margin-top: 3rem; font-size: 1.2rem;">
+        <p>🔗 Live: https://confession-platform.vercel.app/</p>
+        <p style="margin-top: 1rem;">💻 GitHub: https://github.com/usmaanmac04-boop/confession-platform</p>
+        <p style="margin-top: 1rem;">📧 Contact: usmaana252@gmail.com</p>
+      </div>
+      <p style="margin-top: 3rem; font-style: italic; color: #fcd34d;">
+        "Building meaningful digital experiences, one line of code at a time."
+      </p>
+    </div>
+  </div>
+
+  <div class="slide-counter">
+    <span id="current-slide">1</span> / <span id="total-slides">13</span>
+  </div>
+
+  <div class="nav-buttons">
+    <button id="prev-btn">← Previous</button>
+    <button id="next-btn">Next →</button>
+  </div>
+
+  <script>
+    let currentSlide = 0;
+    const slides = document.querySelectorAll('.slide');
+    const totalSlides = slides.length;
+    const prevBtn = document.getElementById('prev-btn');
+    const nextBtn = document.getElementById('next-btn');
+    const currentSlideSpan = document.getElementById('current-slide');
+    const totalSlidesSpan = document.getElementById('total-slides');
+
+    totalSlidesSpan.textContent = totalSlides;
+
+    function showSlide(n) {
+      slides[currentSlide].classList.remove('active');
+      slides[currentSlide].classList.add('prev');
+      
+      currentSlide = n;
+      
+      if (currentSlide >= totalSlides) currentSlide = totalSlides - 1;
+      if (currentSlide < 0) currentSlide = 0;
+      
+      slides.forEach(slide => slide.classList.remove('prev'));
+      slides[currentSlide].classList.add('active');
+      
+      currentSlideSpan.textContent = currentSlide + 1;
+      
+      prevBtn.disabled = currentSlide === 0;
+      nextBtn.disabled = currentSlide === totalSlides - 1;
+    }
+
+    prevBtn.addEventListener('click', () => showSlide(currentSlide - 1));
+    nextBtn.addEventListener('click', () => showSlide(currentSlide + 1));
+
+    // Keyboard navigation
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'ArrowLeft') showSlide(currentSlide - 1);
+      if (e.key === 'ArrowRight') showSlide(currentSlide + 1);
+    });
+
+    // Initial state
+    prevBtn.disabled = true;
+  </script>
+</body>
+</html>
